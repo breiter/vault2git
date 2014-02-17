@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using System.IO;
+using NUnit.Framework;
+using Vault2Git.Lib;
 
 namespace Vault2GitTest
 {
@@ -22,7 +20,7 @@ namespace Vault2GitTest
             try
             {
                 File.Copy(initialFile, tempFile, true);
-                Vault2Git.Lib.Processor.removeSCCFromCSProj(tempFile);
+                Processor.RemoveSccFromCsProj(tempFile);
                 string result = File.ReadAllText(tempFile);
                 string expectedResult = File.ReadAllText(resultFile);
                 Console.WriteLine(result);
@@ -32,6 +30,13 @@ namespace Vault2GitTest
             {
                 File.Delete(tempFile);
             }
+        }
+
+        [Test]
+        public void ReadingXmlDocumentWithAmpersandDoesNotThrowException()
+        {
+            const string FILE_PATH = @"data\testWithAmpersand.xml";
+            Assert.DoesNotThrow(() => Processor.RemoveSccFromCsProj(FILE_PATH));
         }
     }
 }
